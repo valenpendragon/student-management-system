@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget, \
     QGridLayout, QLineEdit, QPushButton, QMainWindow, \
-    QTableWidget, QTableWidgetItem
+    QTableWidget, QTableWidgetItem, QDialog, QVBoxLayout
 from PyQt6.QtGui import QAction
 import sys
 import sqlite3
@@ -20,6 +20,7 @@ class MainWindow(QMainWindow):
 
         # Add actions to the menu (these are submenu items).
         add_student_action = QAction("Add Student", self)
+        add_student_action.triggered.connect(self.insert)
         file_menu_item.addAction(add_student_action)
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
@@ -43,6 +44,28 @@ class MainWindow(QMainWindow):
             for col_no, col_data in enumerate(row_data):
                 self.table.setItem(row_no, col_no, QTableWidgetItem(str(col_data)))
         connection.close()
+
+    def insert(self):
+        print(f"Add student clicked")
+        dialog = InsertDialog()
+        dialog.exec()
+
+
+class InsertDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Insert Student Data")
+        self.setFixedWidth(300)
+        self.setFixedHeight(300)
+        # This is a purely vertical widget layout.
+        layout = QVBoxLayout()
+
+        # Add widgets to the layout since this is a dialog window.
+        student_name = QLineEdit()
+        student_name.setPlaceholderText("Name")
+        layout.addWidget(student_name)
+
+        self.setLayout(layout)
 
 
 app = QApplication(sys.argv)
