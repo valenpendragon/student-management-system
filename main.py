@@ -95,11 +95,11 @@ class InsertDialog(QDialog):
         connection.commit()
         cursor.close()
         connection.close()
-        management_system.load_data()
+        main_window.load_data()
 
 
 app = QApplication(sys.argv)
-management_system = MainWindow()
-management_system.show()
-management_system.load_data()
+main_window = MainWindow()
+main_window.show()
+main_window.load_data()
 sys.exit(app.exec())
