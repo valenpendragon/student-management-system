@@ -1,9 +1,12 @@
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget, \
     QGridLayout, QLineEdit, QPushButton, QMainWindow, \
-    QTableWidget
+    QTableWidget, QTableWidgetItem
 from PyQt6.QtGui import QAction
 import sys
 import sqlite3
+
+# Constants
+DB = db = "G:\\Users\\valen\\Documents\\Valen\\python\\python-mega-course\\student-management-system\\db\\database.db"
 
 
 class MainWindow(QMainWindow):
@@ -25,15 +28,25 @@ class MainWindow(QMainWindow):
         self.table = QTableWidget()
         self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels(("ID", "Name", "Course", "Mobile"))
+        self.table.verticalHeader().setVisible(False)
         self.setCentralWidget(self.table)
 
-        # Populate the table.
-
     def load_data(self):
-        pass
+        """Populates the central widget with data."""
+        connection = sqlite3.connect(DB)
+        result = connection.execute("SELECT * FROM students")
+        # The line below ensures that the load_data method does not
+        # duplicate information in the central widget.
+        self.table.setRowCount(0)
+        for row_no, row_data in enumerate(result):
+            self.table.insertRow(row_no)
+            for col_no, col_data in enumerate(row_data):
+                self.table.setItem(row_no, col_no, QTableWidgetItem(str(col_data)))
+        connection.close()
 
 
 app = QApplication(sys.argv)
 management_system = MainWindow()
 management_system.show()
+management_system.load_data()
 sys.exit(app.exec())
