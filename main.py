@@ -18,6 +18,7 @@ class MainWindow(QMainWindow):
         # Add menus
         file_menu_item = self.menuBar().addMenu("&File")
         help_menu_item = self.menuBar().addMenu("&Help")
+        edit_menu_item = self.menuBar().addMenu("Edit")
 
         # Add actions to the menu (these are submenu items).
         add_student_action = QAction("Add Student", self)
@@ -25,6 +26,9 @@ class MainWindow(QMainWindow):
         file_menu_item.addAction(add_student_action)
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
+        search_action = QAction("Search", self)
+        search_action.triggered.connect(self.search)
+        edit_menu_item.addAction(search_action)
 
         # Add the main table to the GUI.
         self.table = QTableWidget()
@@ -49,6 +53,11 @@ class MainWindow(QMainWindow):
     def insert(self):
         print(f"Add student clicked")
         dialog = InsertDialog()
+        dialog.exec()
+
+    def search(self):
+        print(f"Search clicked")
+        dialog = SearchDialog()
         dialog.exec()
 
 
@@ -96,6 +105,30 @@ class InsertDialog(QDialog):
         cursor.close()
         connection.close()
         main_window.load_data()
+
+
+class SearchDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Search by Student Name")
+        self.setFixedWidth(300)
+        self.setFixedHeight(300)
+        # This is a purely vertical widget layout.
+        layout = QVBoxLayout()
+
+        # Add student name widget to layout.
+        self.student_name = QLineEdit()
+        self.student_name.setPlaceholderText("Name")
+        layout.addWidget(self.student_name)
+
+        button = QPushButton("Search")
+        button.clicked.connect(self.search)
+        layout.addWidget(button)
+
+        self.setLayout(layout)
+
+    def search(self):
+        pass
 
 
 app = QApplication(sys.argv)
