@@ -1,3 +1,4 @@
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget, \
     QGridLayout, QLineEdit, QPushButton, QMainWindow, \
     QTableWidget, QTableWidgetItem, QDialog, QVBoxLayout, \
@@ -18,7 +19,7 @@ class MainWindow(QMainWindow):
         # Add menus
         file_menu_item = self.menuBar().addMenu("&File")
         help_menu_item = self.menuBar().addMenu("&Help")
-        edit_menu_item = self.menuBar().addMenu("Edit")
+        edit_menu_item = self.menuBar().addMenu("&Edit")
 
         # Add actions to the menu (these are submenu items).
         add_student_action = QAction("Add Student", self)
