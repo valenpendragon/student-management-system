@@ -15,6 +15,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Student Management System")
+        self.setMinimumSize(800, 600)
 
         # Add menus
         file_menu_item = self.menuBar().addMenu("&File")
