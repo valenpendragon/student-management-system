@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget, \
     QGridLayout, QLineEdit, QPushButton, QMainWindow, \
     QTableWidget, QTableWidgetItem, QDialog, QVBoxLayout, \
-    QComboBox, QToolBar
+    QComboBox, QToolBar, QStatusBar
 from PyQt6.QtGui import QAction, QIcon
 import sys
 import sqlite3
@@ -46,6 +46,13 @@ class MainWindow(QMainWindow):
         toolbar.addAction(add_student_action)
         toolbar.addAction(search_action)
 
+        # Create status bar.
+        self.statusbar = QStatusBar()
+        self.setStatusBar(self.statusbar)
+
+        # Detect a cell click.
+        self.table.cellClicked.connect(self.cell_clicked)
+
     def load_data(self):
         """Populates the central widget with data."""
         connection = sqlite3.connect(DB)
@@ -67,6 +74,31 @@ class MainWindow(QMainWindow):
     def search(self):
         print(f"Search clicked")
         dialog = SearchDialog()
+        dialog.exec()
+
+    def cell_clicked(self):
+        edit_button = QPushButton("Edit Record")
+        edit_button.clicked.connect(self.edit)
+        delete_button = QPushButton("Delete Record")
+        delete_button.clicked.connect(self.delete)
+
+        # buttons is used instead of children in case we
+        # need to add a similar stanza to eliminate QLabel
+        # widgets later on.
+        buttons = self.findChildren(QPushButton)
+        if buttons:
+            for child in buttons:
+                self.statusbar.removeWidget(child)
+
+        self.statusbar.addWidget(edit_button)
+        self.statusbar.addWidget(delete_button)
+
+    def edit(self):
+        dialog = EditDialog()
+        dialog.exec()
+
+    def delete(self):
+        dialog = DeleteDialog()
         dialog.exec()
 
 
@@ -150,6 +182,14 @@ class SearchDialog(QDialog):
 
         cursor.close()
         connection.close()
+
+
+class EditDialog(QDialog):
+    pass
+
+
+class DeleteDialog(QDialog):
+    pass
 
 
 app = QApplication(sys.argv)
