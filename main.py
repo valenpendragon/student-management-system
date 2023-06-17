@@ -245,7 +245,19 @@ class EditDialog(QDialog):
 
 
 class DeleteDialog(QDialog):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Delete Student Data")
+
+        layout = QGridLayout()
+        confirmation = QLabel("Are you sure you want to delete this record?")
+        yes = QPushButton("Yes")
+        no = QPushButton("No")
+
+        layout.addWidget(confirmation, 0, 0, 1, 2)
+        layout.addWidget(yes, 1, 0)
+        layout.addWidget(no, 1, 1)
+        self.setLayout(layout)
 
 
 app = QApplication(sys.argv)
