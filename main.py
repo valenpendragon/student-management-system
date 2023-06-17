@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         add_student_action.triggered.connect(self.insert)
         file_menu_item.addAction(add_student_action)
         about_action = QAction("About", self)
+        about_action.triggered.connect(self.about)
         help_menu_item.addAction(about_action)
         search_action = QAction(QIcon("icons/search.png"), "Search", self)
         search_action.triggered.connect(self.search)
@@ -99,6 +100,10 @@ class MainWindow(QMainWindow):
 
     def delete(self):
         dialog = DeleteDialog()
+        dialog.exec()
+
+    def about(self):
+        dialog = AboutDialog()
         dialog.exec()
 
 
@@ -282,6 +287,15 @@ class DeleteDialog(QDialog):
         confirmation_widget.exec()
 
 
+class AboutDialog(QMessageBox):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("About")
+        content = """
+        This app was created during the course "Python Mega Course".
+        Feel free to modify and reuse this app.
+        """
+        self.setText(content)
 
 
 app = QApplication(sys.argv)
