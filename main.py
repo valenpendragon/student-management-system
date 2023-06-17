@@ -260,6 +260,7 @@ class DeleteDialog(QDialog):
         self.setLayout(layout)
 
         yes.clicked.connect(self.delete_student)
+        no.clicked.connect(self.close)
 
     def delete_student(self):
         # Get selected row index and student ID.
